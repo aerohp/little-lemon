@@ -1,25 +1,22 @@
 package com.example.littlelemon
 
+import android.app.Activity
+import android.content.Context.MODE_PRIVATE
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,8 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,14 +33,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.ui.theme.LittleLemonColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Onboarding() {
+fun Onboarding(navController: NavHostController) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+
+    val activity = LocalContext.current as Activity
+    val sp = activity.getSharedPreferences(Constants.SP_USER_DATA, MODE_PRIVATE)
 
     Column() {
         Box(
@@ -92,19 +94,25 @@ fun Onboarding() {
         Column(
             modifier = Modifier.fillMaxWidth()) {
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 value = firstName,
                 onValueChange = { firstName = it },
                 label = { Text(stringResource(R.string.first_name)) }
             )
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 value = lastName,
                 onValueChange = { lastName = it},
                 label = { Text(stringResource(R.string.last_name)) }
             )
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 value = email,
                 onValueChange = { email = it},
                 label = { Text(stringResource(R.string.email)) }
@@ -119,7 +127,19 @@ fun Onboarding() {
             contentAlignment = Alignment.BottomCenter
         ) {
             Button(
-                onClick = { },
+                onClick = {
+                          if(firstName.isNullOrEmpty() || lastName.isNullOrEmpty() || email.isNullOrEmpty()) {
+                              Toast.makeText(activity, R.string.onboarding_registration_unsuccessful, Toast.LENGTH_SHORT).show()
+                          } else {
+                              sp.edit()
+                                  .putString(Constants.SP_KEY_FIRST_NAME, firstName)
+                                  .putString(Constants.SP_KEY_LAST_NAME, lastName)
+                                  .putString(Constants.SP_KEY_EMAIL, email)
+                                  .apply()
+                              Toast.makeText(activity, R.string.onboarding_registration_successful, Toast.LENGTH_SHORT).show()
+                              navController?.navigate(Home.route)
+                          }
+                },
                 shape = RoundedCornerShape(5.dp),
                 modifier = Modifier.fillMaxWidth(),
                 border = BorderStroke(2.dp, LittleLemonColor.gold),
@@ -137,5 +157,5 @@ fun Onboarding() {
 @Preview
 @Composable
 fun OnboardingPreview() {
-    Onboarding()
+    Onboarding(rememberNavController())
 }
