@@ -5,6 +5,9 @@
     <string name="last_name">Last name</string>
     <string name="email">Email</string>
     <string name="register">Register</string>
+    <string name="logout">Log out</string>
     <string name="personal_information">Personal information</string>
     <string name="onboarding_description">Let\'s get to know you</string>
+    <string name="onboarding_registration_unsuccessful">Registration unsuccessful. Please enter all data.</string>
+    <string name="onboarding_registration_successful">Registration successful!</string>
 </resources>
