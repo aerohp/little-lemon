@@ -1,6 +1,5 @@
 package com.example.littlelemon
 
-import android.app.Activity
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -9,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, database: AppDatabase) {
 
     val sp = LocalContext.current.getSharedPreferences(Constants.SP_USER_DATA, Context.MODE_PRIVATE)
     val firstName = sp.getString(Constants.SP_KEY_FIRST_NAME, null)
@@ -19,7 +18,7 @@ fun Navigation(navController: NavHostController) {
             Onboarding(navController)
         }
         composable(Home.route) {
-            Home(navController)
+            Home(navController, database)
         }
         composable(Profile.route) {
             Profile(navController)

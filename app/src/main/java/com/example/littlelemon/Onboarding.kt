@@ -13,10 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +36,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.ui.theme.LittleLemonColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Onboarding(navController: NavHostController) {
     var firstName by remember { mutableStateOf("") }
@@ -143,7 +141,7 @@ fun Onboarding(navController: NavHostController) {
                 shape = RoundedCornerShape(5.dp),
                 modifier = Modifier.fillMaxWidth(),
                 border = BorderStroke(2.dp, LittleLemonColor.gold),
-                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = LittleLemonColor.yellow)
+                colors = androidx.compose.material.ButtonDefaults.buttonColors(contentColor = LittleLemonColor.yellow)
             ) {
                 Text(
                     text = stringResource(id = R.string.register),
