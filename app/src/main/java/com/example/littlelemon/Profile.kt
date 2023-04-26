@@ -122,7 +122,7 @@ fun Profile(navController: NavHostController) {
                 shape = RoundedCornerShape(5.dp),
                 modifier = Modifier.fillMaxWidth(),
                 border = BorderStroke(2.dp, LittleLemonColor.gold),
-                colors = ButtonDefaults.buttonColors(contentColor = LittleLemonColor.yellow)
+                colors = ButtonDefaults.buttonColors(backgroundColor = LittleLemonColor.yellow)
             ) {
                 Text(
                     text = stringResource(id = R.string.logout),

@@ -141,7 +141,7 @@ fun Onboarding(navController: NavHostController) {
                 shape = RoundedCornerShape(5.dp),
                 modifier = Modifier.fillMaxWidth(),
                 border = BorderStroke(2.dp, LittleLemonColor.gold),
-                colors = androidx.compose.material.ButtonDefaults.buttonColors(contentColor = LittleLemonColor.yellow)
+                colors = androidx.compose.material.ButtonDefaults.buttonColors(backgroundColor = LittleLemonColor.yellow)
             ) {
                 Text(
                     text = stringResource(id = R.string.register),

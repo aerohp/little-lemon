@@ -1,5 +1,6 @@
 package com.example.littlelemon
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -22,6 +25,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,8 +43,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
@@ -91,6 +101,16 @@ fun UpperPanel(database: AppDatabase) {
 
     var menuItems = if(orderMenuItems) databaseMenuItems.sortedBy { it.title } else databaseMenuItems
 
+    var filterCategory by remember { mutableStateOf("") }
+    val categoryStarts = stringResource(R.string.starts)
+    val categoryMains = stringResource(R.string.mains)
+    val categoryDesserts = stringResource(R.string.desserts)
+    val categoryDrinks = stringResource(R.string.drinks)
+
+    var searchPhrase by remember { mutableStateOf("") }
+
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .background(LittleLemonColor.green)
@@ -124,21 +144,28 @@ fun UpperPanel(database: AppDatabase) {
                 painter = painterResource(id = R.drawable.hero),
                 contentDescription = stringResource(R.string.hero_image),
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(150.dp).clip(RoundedCornerShape(10.dp))
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(RoundedCornerShape(10.dp))
             )
         }
 
-        var searchPhrase by remember { mutableStateOf("") }
         TextField(
             modifier = Modifier
-                .fillMaxWidth().padding(top = 16.dp),
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+                .onFocusChanged {
+                    if (it.isFocused) {
+                        filterCategory = ""
+                    }
+                },
             singleLine = true,
             value = searchPhrase,
             onValueChange = { searchPhrase = it},
-            label = { Text(stringResource(R.string.search_label)) },
+            placeholder = { Text(stringResource(R.string.search_label)) },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.search),
+                    imageVector = Icons.Default.Search,
                     contentDescription = stringResource(R.string.search_label)
                 )
             },
@@ -149,6 +176,72 @@ fun UpperPanel(database: AppDatabase) {
 
         if(searchPhrase.isNotEmpty()) {
             menuItems = databaseMenuItems.filter { it.title.contains(searchPhrase, true) }
+        }
+    }
+    Column(modifier = Modifier.padding(12.dp)) {
+        Text(
+            text = stringResource(id = R.string.order_for_delivery),
+            style = MaterialTheme.typography.h1,
+            color = Color.Black
+        )
+
+        Row(modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Button(
+                onClick = {
+                    focusManager.clearFocus()
+                    filterCategory = categoryStarts
+                    searchPhrase = ""
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {
+                Text(
+                    text = stringResource(R.string.starts),
+                    color = Color.DarkGray
+                )
+            }
+            Button(
+                onClick = {
+                    focusManager.clearFocus()
+                    filterCategory = categoryMains
+                    searchPhrase = ""
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {
+                Text(
+                    text = stringResource(R.string.mains),
+                    color = Color.DarkGray
+                )
+            }
+            Button(
+                onClick = {
+                    focusManager.clearFocus()
+                    filterCategory = categoryDesserts
+                    searchPhrase = ""
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {
+                Text(
+                    text = stringResource(R.string.desserts),
+                    color = Color.DarkGray
+                )
+            }
+            Button(
+                onClick = {
+                    focusManager.clearFocus()
+                    filterCategory = categoryDrinks
+                    searchPhrase = ""
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)) {
+                Text(
+                    text = stringResource(R.string.drinks),
+                    color = Color.DarkGray
+                )
+            }
+        }
+        if(filterCategory.isNotEmpty()) {
+            menuItems = databaseMenuItems.filter { it.category.equals(filterCategory, true) }
         }
     }
     LowerPanel(menuItems)
