@@ -10,4 +10,9 @@
     <string name="onboarding_description">Let\'s get to know you</string>
     <string name="onboarding_registration_unsuccessful">Registration unsuccessful. Please enter all data.</string>
     <string name="onboarding_registration_successful">Registration successful!</string>
+    <string name="title">Little Lemon</string>
+    <string name="location">Chicago</string>
+    <string name="description">We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</string>
+    <string name="hero_image">Hero Image</string>
+    <string name="search_label">Enter search phrase</string>
 </resources>

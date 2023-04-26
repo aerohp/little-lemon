@@ -11,11 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +30,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.ui.theme.LittleLemonColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile(navController: NavHostController) {
 
@@ -124,7 +122,7 @@ fun Profile(navController: NavHostController) {
                 shape = RoundedCornerShape(5.dp),
                 modifier = Modifier.fillMaxWidth(),
                 border = BorderStroke(2.dp, LittleLemonColor.gold),
-                colors = ButtonDefaults.buttonColors(containerColor = LittleLemonColor.yellow)
+                colors = ButtonDefaults.buttonColors(contentColor = LittleLemonColor.yellow)
             ) {
                 Text(
                     text = stringResource(id = R.string.logout),
